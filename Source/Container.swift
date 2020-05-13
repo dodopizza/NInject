@@ -30,11 +30,11 @@ class Container {
         self.init(assemblies: assemblies, storyboardable: storyboardable)
     }
 
-    func resolveStoryboardable(_ object: NSObject) {
+    func resolveStoryboardable(_ object: Any) {
         let key = self.key(object)
         let storyboard = storyboards[key]
 
-        assert(storyboard.isNil, "\(key) is not registered")
+        assert(!storyboard.isNil, "\(key) is not registered")
         storyboard?(object, self)
     }
 
