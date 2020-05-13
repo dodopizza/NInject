@@ -9,7 +9,7 @@ extension NSObject {
         static var dipTag = "NInject.dipTag"
     }
 
-    @objc private var isInitializedFromDI: Bool {
+    @objc internal var isInitializedFromDI: Bool {
         get {
             return (objc_getAssociatedObject(self, &AssociatedKeys.initialization) as? Bool) ?? false
         }
@@ -18,12 +18,21 @@ extension NSObject {
         }
     }
 
-    @objc internal static var container: ContainerPropertyHolder? {
+    @objc private static var containerHolder: ContainerPropertyHolder? {
         get {
             return objc_getAssociatedObject(self, &AssociatedKeys.container) as? ContainerPropertyHolder
         }
         set {
             objc_setAssociatedObject(self, &AssociatedKeys.container, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+
+    internal static var container: Container? {
+        get {
+            return containerHolder?.value
+        }
+        set {
+            containerHolder = newValue.map({ ContainerPropertyHolder(value: $0) })
         }
     }
 
@@ -39,13 +48,13 @@ extension NSObject {
             }
             isInitializedFromDI = true
 
-            NSObject.container?.value.resolveStoryboardable(self)
+            NSObject.container?.resolveStoryboardable(self)
         }
     }
 }
 
 class ContainerPropertyHolder: NSObject {
-    let value: Container
+    weak var value: Container?
 
     required init(value: Container) {
         self.value = value

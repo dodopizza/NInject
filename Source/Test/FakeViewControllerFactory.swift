@@ -1,10 +1,9 @@
 import Foundation
 import Spry
-import Swinject
 
-import NSwinject
+import NInject
 
-class NFakeViewControllerFactory: NViewControllerFactory, Spryable {
+class FakeViewControllerFactory: ViewControllerFactory, Spryable {
     enum ClassFunction: String, StringRepresentable {
         case empty
     }
@@ -14,7 +13,7 @@ class NFakeViewControllerFactory: NViewControllerFactory, Spryable {
         case createNavigationController = "createNavigationController(from:bundle:)"
     }
 
-    public init() {
+    init() {
     }
 
     func instantiate<T>(from nibName: String?, bundle: Bundle?) -> T where T: UIViewController {

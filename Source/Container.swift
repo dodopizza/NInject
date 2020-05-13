@@ -14,6 +14,16 @@ class Container {
         if storyboardable {
             makeStoryboardable()
         }
+
+        register(ViewControllerFactory.self) { [unowned self] _, _ in
+            Impl.ViewControllerFactory(container: self)
+        }
+    }
+
+    deinit {
+        if NSObject.container === self {
+            NSObject.container = nil
+        }
     }
 
     public convenience init(assemblies: Assembly..., storyboardable: Bool = false) {
@@ -52,7 +62,6 @@ extension Container: Registrator {
 
     public func register<T>(_ type: T.Type, kind: EntityKind = .init(), _ entity: @escaping (Resolver, _ arguments: Arguments) -> T) {
         let key = self.key(type)
-        print(key)
         assert(storages[key].isNil, "\(type) is already registered")
 
         switch kind {
@@ -75,7 +84,7 @@ extension Container: Resolver {
 extension Container /* Storyboardable */ {
     func makeStoryboardable() {
         assert(NSObject.container.isNil, "storyboard handler was registered twice")
-        NSObject.container = .init(value: self)
+        NSObject.container = self
     }
 }
 

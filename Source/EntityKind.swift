@@ -1,11 +1,15 @@
 import Foundation
 
-public enum EntityKind {
+public enum EntityKind: Equatable {
     case container
     case weak
     case transient
 
     public init() {
-        self = .weak
+        self = .default
+    }
+
+    public static var `default`: EntityKind {
+        .weak
     }
 }
