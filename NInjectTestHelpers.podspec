@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
     spec.name         = "NInjectTestHelpers"
     spec.version      = "1.0.0"
-    spec.summary      = "Swinject extension"
+    spec.summary      = "DI extension"
 
     spec.source       = { :git => "https://bitbucket.org/tech4star/NInject.git" }
     spec.homepage     = "https://bitbucket.org/tech4star/NInject.git"
@@ -29,7 +29,7 @@ Pod::Spec.new do |spec|
     spec.frameworks = 'XCTest', 'Foundation'
 
     spec.test_spec 'Tests' do |tests|
-        #        tests.requires_app_host = true
+        tests.requires_app_host = false
         tests.source_files = 'Source/**/*Spec.swift'
         tests.exclude_files = 'Source/**/Test*.*',
                               'Source/**/Fake*.*',

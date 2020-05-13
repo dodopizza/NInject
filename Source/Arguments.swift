@@ -8,6 +8,7 @@ public struct Arguments: ExpressibleByArrayLiteral {
     }
 
     public func resolve<T>(_ type: T.Type, at index: Int) -> T {
+        // swiftlint:disable:next force_cast
         elements[index] as! T
     }
 
@@ -16,6 +17,7 @@ public struct Arguments: ExpressibleByArrayLiteral {
     }
 
     public subscript<T>(index: Int) -> T {
+        // swiftlint:disable:next force_cast
         elements[index] as! T
     }
 }

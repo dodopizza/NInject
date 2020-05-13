@@ -3,9 +3,10 @@ import UIKit
 import ObjectiveC
 
 extension NSObject {
-    private struct AssociatedKeys {
+    private enum AssociatedKeys {
         static var initialization = "NInject.isInitializedFromDI"
         static var container = "NInject.container"
+        static var dipTag = "NInject.dipTag"
     }
 
     @objc private var isInitializedFromDI: Bool {
@@ -28,9 +29,11 @@ extension NSObject {
 
     @objc private(set) internal var dipTag: String? {
         get {
-            return nil
+            return objc_getAssociatedObject(self, &AssociatedKeys.dipTag) as? String
         }
         set {
+            objc_setAssociatedObject(self, &AssociatedKeys.dipTag, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+
             if isInitializedFromDI {
                 return
             }
