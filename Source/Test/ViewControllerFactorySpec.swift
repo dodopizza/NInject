@@ -4,23 +4,19 @@ import Quick
 import Nimble
 import Spry
 import Spry_Nimble
-import Swinject
-import SwinjectStoryboard
 
-@testable import NSwinject
-@testable import NSwinjectTestHelpers
+@testable import NInject
+@testable import NInjectTestHelpers
 
 class NViewControllerFactorySpec: QuickSpec {
     override func spec() {
         describe("NViewControllerFactory") {
-            var subject: NViewControllerFactory!
+            var subject: ViewControllerFactory!
 
             beforeEach {
-                let container = SwinjectStoryboard.defaultContainer
-                container.storyboardInitCompleted(TestViewController.self) { _, _ in }
-                container.storyboardInitCompleted(UIViewController.self) { _, _ in }
-
-                subject = NViewControllerFactoryImpl(container: container)
+                let container = Container()
+                container.registerStoryboardable(TestViewController.self, { _, _ in })
+                subject = Impl.ViewControllerFactory(container: container)
             }
 
             describe("creating view controller") {
@@ -43,7 +39,7 @@ class NViewControllerFactorySpec: QuickSpec {
                 }
 
                 it("should create corresponded navigation controller") {
-                    expect(navigationController).toNot(beNil())
+                    expect(navigationController?.0).to(beAnInstanceOf(UINavigationController.self))
                     expect(navigationController?.0.viewControllers.first).to(beAnInstanceOf(TestViewController.self))
                     expect(navigationController?.1).to(beAnInstanceOf(TestViewController.self))
                 }
