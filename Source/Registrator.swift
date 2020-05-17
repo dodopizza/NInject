@@ -12,6 +12,7 @@ public extension Registrator {
 }
 
 public extension Registrator {
+    // MARK: resolver & arguments
     func register<T>(kind: EntityKind, _ entity: @escaping (Resolver, _ arguments: Arguments) -> T) {
         register(T.self, kind: kind, entity)
     }
@@ -32,6 +33,20 @@ public extension Registrator {
         register(kind: .default, { _, args in entity(args) })
     }
 
+    // MARK: resolver
+    func register<T>(kind: EntityKind, _ entity: @escaping (Resolver) -> T) {
+        register(T.self, kind: kind, { r, _ in entity(r) })
+    }
+
+    func register<T>(_ entity: @escaping (Resolver) -> T) {
+        register(T.self, kind: .default, { r, _ in entity(r) })
+    }
+
+    func register<T>(_ type: T.Type, _ entity: @escaping (Resolver) -> T) {
+        register(type, kind: .default, { r, _ in entity(r) })
+    }
+
+    // MARK: -
     func register<T>(kind: EntityKind = .default, _ entity: @escaping () -> T) {
         register(kind: kind, { _, _ in entity() })
     }
