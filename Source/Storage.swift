@@ -2,7 +2,6 @@ import Foundation
 
 protocol Storage {
     typealias Entity = Any
-    typealias Argument = Any
     typealias Generator = (Resolver, _ arguments: Arguments) -> Entity
 
     func resolve(with container: Resolver, arguments: Arguments) -> Entity

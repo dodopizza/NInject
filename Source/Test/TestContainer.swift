@@ -2,10 +2,13 @@ import Foundation
 import NInject
 import Spry
 
+@testable import NInject
+
 enum RegistrationInfo: Equatable, SpryEquatable {
     case register(Any.Type, EntityKind)
     case registerStoryboardable(Any.Type)
     case registerViewController(Any.Type)
+    case forwarding(to: Any.Type)
 
     static func == (lhs: RegistrationInfo, rhs: RegistrationInfo) -> Bool {
         switch (lhs, rhs) {
@@ -15,29 +18,47 @@ enum RegistrationInfo: Equatable, SpryEquatable {
             return ta == tb
         case (.registerViewController(let ta), .registerViewController(let tb)):
             return ta == tb
-        case (register, _),
-             (registerStoryboardable, _),
-             (registerViewController, _):
+        case (.forwarding(let ta), .forwarding(let tb)):
+            return ta == tb
+        case (.register, _),
+             (.registerStoryboardable, _),
+             (.registerViewController, _),
+             (.forwarding, _):
             return false
         }
     }
 }
 
-class TestRegistrator: Registrator {
+class TestContainer {
     private(set) var registered: [RegistrationInfo] = []
+    let real: Container = .init(assemblies: [])
 
     init() {
     }
+}
 
-    func register<T>(_ type: T.Type, kind: EntityKind, _ entity: @escaping (Resolver, _ arguments: Arguments) -> T) {
+extension TestContainer: ForwardRegistrator {
+    func register<T>(_ type: T.Type, storage: Storage) {
+        registered.append(.forwarding(to: type))
+        real.register(type, storage: storage)
+    }
+}
+
+extension TestContainer: Registrator {
+    @discardableResult
+    func register<T>(_ type: T.Type, kind: EntityKind, _ entity: @escaping (Resolver, Arguments) -> T) -> Forwarding {
         registered.append(.register(type, kind))
+        real.register(type, kind: kind, entity)
+        return Forwarder(container: self, storage: TransientStorage(generator: entity))
     }
 
     func registerStoryboardable<T>(_ type: T.Type, _ entity: @escaping (T, Resolver) -> Void) {
         registered.append(.registerStoryboardable(type))
+        return real.registerStoryboardable(type, entity)
     }
 
     func registerViewController<T: UIViewController>(_ type: T.Type, _ entity: @escaping (T, Resolver) -> Void) {
         registered.append(.registerViewController(type))
+        return real.registerViewController(type, entity)
     }
 }

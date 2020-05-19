@@ -50,7 +50,8 @@ class Container {
 }
 
 extension Container: Registrator {
-    public func registerStoryboardable<T>(_ type: T.Type, _ entity: @escaping (T, Resolver) -> Void) {
+    public func registerStoryboardable<T>(_ type: T.Type,
+                                          _ entity: @escaping (T, Resolver) -> Void) {
         let key = self.key(type)
         assert(storyboards[key].isNil, "\(type) is already registered")
         storyboards[key] = { c, r in
@@ -60,18 +61,33 @@ extension Container: Registrator {
         }
     }
 
-    public func register<T>(_ type: T.Type, kind: EntityKind = .init(), _ entity: @escaping (Resolver, _ arguments: Arguments) -> T) {
+    @discardableResult
+    public func register<T>(_ type: T.Type,
+                            kind: EntityKind = .init(),
+                            _ entity: @escaping (Resolver, _ arguments: Arguments) -> T) -> Forwarding {
         let key = self.key(type)
         assert(storages[key].isNil, "\(type) is already registered")
 
+        let storage: Storage
         switch kind {
         case .container:
-            storages[key] = ContainerStorage(generator: entity)
+            storage = ContainerStorage(generator: entity)
         case .transient:
-            storages[key] = TransientStorage(generator: entity)
+            storage = TransientStorage(generator: entity)
         case .weak:
-            storages[key] = WeakStorage(generator: entity)
+            storage = WeakStorage(generator: entity)
         }
+
+        storages[key] = storage
+        return Forwarder(container: self, storage: storage)
+    }
+}
+
+extension Container: ForwardRegistrator {
+    func register<T>(_ type: T.Type, storage: Storage) {
+        let key = self.key(type)
+        assert(storages[key].isNil, "\(type) is already registered")
+        storages[key] = storage
     }
 }
 

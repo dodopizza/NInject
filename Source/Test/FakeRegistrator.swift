@@ -17,7 +17,8 @@ class FakeRegistrator: Registrator, Spryable {
     init() {
     }
 
-    func register<T>(_ type: T.Type, kind: EntityKind, _ entity: @escaping (Resolver, _ arguments: Arguments) -> T) {
+    @discardableResult
+    func register<T>(_ type: T.Type, kind: EntityKind, _ entity: @escaping (Resolver, Arguments) -> T) -> Forwarding {
         return spryify(arguments: type, kind, entity)
     }
 
