@@ -31,7 +31,7 @@ public extension Registrator {
     }
 
     @discardableResult
-    func register<T>(options: Options = .default, _ entity: @escaping (_ arguments: Arguments) -> T) -> Forwarding {
+    func register<T>(options: Options, _ entity: @escaping (_ arguments: Arguments) -> T) -> Forwarding {
         register(options: options, { _, args in entity(args) })
     }
 
@@ -56,9 +56,14 @@ public extension Registrator {
         register(type, options: .default, { r, _ in entity(r) })
     }
 
+    @discardableResult
+    func register<T>(_ type: T.Type, options: Options, _ entity: @escaping (Resolver) -> T) -> Forwarding {
+        register(type, options: options, { r, _ in entity(r) })
+    }
+
     // MARK: -
     @discardableResult
-    func register<T>(options: Options = .default, _ entity: @escaping () -> T) -> Forwarding {
+    func register<T>(options: Options, _ entity: @escaping () -> T) -> Forwarding {
         register(options: options, { _, _ in entity() })
     }
 
@@ -68,7 +73,7 @@ public extension Registrator {
     }
 
     @discardableResult
-    func register<T>(_ type: T.Type, options: Options = .default, _ entity: @escaping () -> T) -> Forwarding {
+    func register<T>(_ type: T.Type, options: Options, _ entity: @escaping () -> T) -> Forwarding {
         register(options: options, { _, _ in entity() })
     }
 
