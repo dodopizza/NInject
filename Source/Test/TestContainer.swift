@@ -49,7 +49,7 @@ extension TestContainer: Registrator {
     func register<T>(_ type: T.Type, options: Options, _ entity: @escaping (Resolver, Arguments) -> T) -> Forwarding {
         registered.append(.register(type, options))
         real.register(type, options: options, entity)
-        return Forwarder(container: self, storage: TransientStorage(generator: entity))
+        return Forwarder(container: self, storage: TransientStorage(accessLevel: options.accessLevel, generator: entity))
     }
 
     func registerStoryboardable<T>(_ type: T.Type, _ entity: @escaping (T, Resolver) -> Void) {
