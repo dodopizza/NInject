@@ -60,7 +60,7 @@ extension NSObject {
     }
 }
 
-class ContainerPropertyHolder: NSObject {
+private class ContainerPropertyHolder: NSObject {
     weak var value: Container?
 
     required init(value: Container) {

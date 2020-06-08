@@ -106,7 +106,7 @@ extension Container: Resolver {
 }
 
 extension Container /* Storyboardable */ {
-    func makeStoryboardable() {
+    private func makeStoryboardable() {
         assert(NSObject.container.isNil, "storyboard handler was registered twice")
         NSObject.container = self
     }
