@@ -67,21 +67,23 @@ extension Container: Registrator {
                             _ entity: @escaping (Resolver, _ arguments: Arguments) -> T) -> Forwarding {
         let key = self.key(type)
 
-        switch options.accessLevel {
-        case .final:
+        switch storages[key]?.accessLevel {
+        case .final?:
             assert(storages[key].isNil, "\(type) is already registered")
-        case .open:
+        case .open?,
+             .none:
             break
         }
 
         let storage: Storage
+        let accessLevel = options.accessLevel
         switch options.entityKind {
         case .container:
-            storage = ContainerStorage(generator: entity)
+            storage = ContainerStorage(accessLevel: accessLevel, generator: entity)
         case .transient:
-            storage = TransientStorage(generator: entity)
+            storage = TransientStorage(accessLevel: accessLevel, generator: entity)
         case .weak:
-            storage = WeakStorage(generator: entity)
+            storage = WeakStorage(accessLevel: accessLevel, generator: entity)
         }
 
         storages[key] = storage

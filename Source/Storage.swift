@@ -4,15 +4,19 @@ protocol Storage {
     typealias Entity = Any
     typealias Generator = (Resolver, _ arguments: Arguments) -> Entity
 
+    var accessLevel: Options.AccessLevel { get }
     func resolve(with container: Resolver, arguments: Arguments) -> Entity
 }
 
 final
 class ContainerStorage: Storage {
     private var entity: Entity?
-    private var generator: Generator
+    private let generator: Generator
+    let accessLevel: Options.AccessLevel
 
-    init(generator: @escaping Generator) {
+    init(accessLevel: Options.AccessLevel,
+         generator: @escaping Generator) {
+        self.accessLevel = accessLevel
         self.generator = generator
     }
 
@@ -30,9 +34,12 @@ class ContainerStorage: Storage {
 final
 class WeakStorage: Storage {
     private var entity: () -> Entity? = { nil }
-    private var generator: Generator
+    private let generator: Generator
+    let accessLevel: Options.AccessLevel
 
-    init(generator: @escaping Generator) {
+    init(accessLevel: Options.AccessLevel,
+         generator: @escaping Generator) {
+        self.accessLevel = accessLevel
         self.generator = generator
     }
 
@@ -49,9 +56,12 @@ class WeakStorage: Storage {
 
 final
 class TransientStorage: Storage {
-    private var generator: Generator
+    private let generator: Generator
+    let accessLevel: Options.AccessLevel
 
-    init(generator: @escaping Generator) {
+    init(accessLevel: Options.AccessLevel,
+         generator: @escaping Generator) {
+        self.accessLevel = accessLevel
         self.generator = generator
     }
 
