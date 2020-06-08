@@ -29,14 +29,14 @@ public extension Resolver {
 // MARK: - optional
 public extension Resolver {
     func optionalResolve<T>(_ type: T.Type) -> T? {
-        resolve(type, with: [])
+        optionalResolve(type, with: [])
     }
 
     func optionalResolve<T>(with arguments: Arguments) -> T? {
-        resolve(T.self, with: arguments)
+        optionalResolve(T.self, with: arguments)
     }
 
     func optionalResolve<T>() -> T? {
-        resolve(T.self, with: [])
+        optionalResolve(T.self, with: [])
     }
 }

@@ -42,14 +42,21 @@ extension NSObject {
         }
         set {
             objc_setAssociatedObject(self, &AssociatedKeys.dipTag, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-
-            if isInitializedFromDI {
-                return
-            }
-            isInitializedFromDI = true
-
-            NSObject.container?.resolveStoryboardable(self)
+            resolveDependencies()
         }
+    }
+
+    public func resolveDependenciesManually() {
+        resolveDependencies()
+    }
+
+    private func resolveDependencies() {
+        if isInitializedFromDI {
+            return
+        }
+        isInitializedFromDI = true
+
+        NSObject.container?.resolveStoryboardable(self)
     }
 }
 
