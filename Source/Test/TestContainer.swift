@@ -5,7 +5,7 @@ import Spry
 @testable import NInject
 
 enum RegistrationInfo: Equatable, SpryEquatable {
-    case register(Any.Type, EntityKind)
+    case register(Any.Type, Options)
     case registerStoryboardable(Any.Type)
     case registerViewController(Any.Type)
     case forwarding(to: Any.Type)
@@ -46,9 +46,9 @@ extension TestContainer: ForwardRegistrator {
 
 extension TestContainer: Registrator {
     @discardableResult
-    func register<T>(_ type: T.Type, kind: EntityKind, _ entity: @escaping (Resolver, Arguments) -> T) -> Forwarding {
-        registered.append(.register(type, kind))
-        real.register(type, kind: kind, entity)
+    func register<T>(_ type: T.Type, options: Options, _ entity: @escaping (Resolver, Arguments) -> T) -> Forwarding {
+        registered.append(.register(type, options))
+        real.register(type, options: options, entity)
         return Forwarder(container: self, storage: TransientStorage(generator: entity))
     }
 

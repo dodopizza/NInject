@@ -63,13 +63,19 @@ extension Container: Registrator {
 
     @discardableResult
     public func register<T>(_ type: T.Type,
-                            kind: EntityKind = .init(),
+                            options: Options = .default,
                             _ entity: @escaping (Resolver, _ arguments: Arguments) -> T) -> Forwarding {
         let key = self.key(type)
-        assert(storages[key].isNil, "\(type) is already registered")
+
+        switch options.accessLevel {
+        case .final:
+            assert(storages[key].isNil, "\(type) is already registered")
+        case .open:
+            break
+        }
 
         let storage: Storage
-        switch kind {
+        switch options.entityKind {
         case .container:
             storage = ContainerStorage(generator: entity)
         case .transient:

@@ -2,7 +2,7 @@ import Foundation
 
 public protocol Registrator {
     @discardableResult
-    func register<T>(_ type: T.Type, kind: EntityKind, _ entity: @escaping (Resolver, _ arguments: Arguments) -> T) -> Forwarding
+    func register<T>(_ type: T.Type, options: Options, _ entity: @escaping (Resolver, _ arguments: Arguments) -> T) -> Forwarding
 
     func registerStoryboardable<T>(_ type: T.Type, _ entity: @escaping (T, Resolver) -> Void)
 }
@@ -16,64 +16,64 @@ public extension Registrator {
 public extension Registrator {
     // MARK: resolver & arguments
     @discardableResult
-    func register<T>(kind: EntityKind, _ entity: @escaping (Resolver, _ arguments: Arguments) -> T) -> Forwarding {
-        register(T.self, kind: kind, entity)
+    func register<T>(options: Options, _ entity: @escaping (Resolver, _ arguments: Arguments) -> T) -> Forwarding {
+        register(T.self, options: options, entity)
     }
 
     @discardableResult
     func register<T>(_ entity: @escaping (Resolver, _ arguments: Arguments) -> T) -> Forwarding {
-        register(T.self, kind: .default, entity)
+        register(T.self, options: .default, entity)
     }
 
     @discardableResult
     func register<T>(_ type: T.Type, _ entity: @escaping (Resolver, _ arguments: Arguments) -> T) -> Forwarding {
-        register(type, kind: .default, entity)
+        register(type, options: .default, entity)
     }
 
     @discardableResult
-    func register<T>(kind: EntityKind = .default, _ entity: @escaping (_ arguments: Arguments) -> T) -> Forwarding {
-        register(kind: kind, { _, args in entity(args) })
+    func register<T>(options: Options = .default, _ entity: @escaping (_ arguments: Arguments) -> T) -> Forwarding {
+        register(options: options, { _, args in entity(args) })
     }
 
     @discardableResult
     func register<T>(_ entity: @escaping (_ arguments: Arguments) -> T) -> Forwarding {
-        register(kind: .default, { _, args in entity(args) })
+        register(options: .default, { _, args in entity(args) })
     }
 
     // MARK: resolver
     @discardableResult
-    func register<T>(kind: EntityKind, _ entity: @escaping (Resolver) -> T) -> Forwarding {
-        register(T.self, kind: kind, { r, _ in entity(r) })
+    func register<T>(options: Options, _ entity: @escaping (Resolver) -> T) -> Forwarding {
+        register(T.self, options: options, { r, _ in entity(r) })
     }
 
     @discardableResult
     func register<T>(_ entity: @escaping (Resolver) -> T) -> Forwarding {
-        register(T.self, kind: .default, { r, _ in entity(r) })
+        register(T.self, options: .default, { r, _ in entity(r) })
     }
 
     @discardableResult
     func register<T>(_ type: T.Type, _ entity: @escaping (Resolver) -> T) -> Forwarding {
-        register(type, kind: .default, { r, _ in entity(r) })
+        register(type, options: .default, { r, _ in entity(r) })
     }
 
     // MARK: -
     @discardableResult
-    func register<T>(kind: EntityKind = .default, _ entity: @escaping () -> T) -> Forwarding {
-        register(kind: kind, { _, _ in entity() })
+    func register<T>(options: Options = .default, _ entity: @escaping () -> T) -> Forwarding {
+        register(options: options, { _, _ in entity() })
     }
 
     @discardableResult
     func register<T>(_ entity: @escaping () -> T) -> Forwarding {
-        register(kind: .default, { _, _ in entity() })
+        register(options: .default, { _, _ in entity() })
     }
 
     @discardableResult
-    func register<T>(_ type: T.Type, kind: EntityKind = .default, _ entity: @escaping () -> T) -> Forwarding {
-        register(kind: kind, { _, _ in entity() })
+    func register<T>(_ type: T.Type, options: Options = .default, _ entity: @escaping () -> T) -> Forwarding {
+        register(options: options, { _, _ in entity() })
     }
 
     @discardableResult
     func register<T>(_ type: T.Type, _ entity: @escaping () -> T) -> Forwarding {
-        register(kind: .default, { _, _ in entity() })
+        register(options: .default, { _, _ in entity() })
     }
 }
