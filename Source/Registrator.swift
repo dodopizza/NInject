@@ -11,6 +11,14 @@ public extension Registrator {
     func registerViewController<T: UIViewController>(_ type: T.Type, _ entity: @escaping (T, Resolver) -> Void) {
         registerStoryboardable(type, entity)
     }
+
+    func registerViewController<T>(_ type: T.Type) {
+        registerStoryboardable(type, { _, _ in })
+    }
+
+    func registerStoryboardable<T>(_ type: T.Type) {
+        registerStoryboardable(type, { _, _ in })
+    }
 }
 
 public extension Registrator {
