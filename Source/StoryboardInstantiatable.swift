@@ -2,6 +2,10 @@ import Foundation
 import UIKit
 import ObjectiveC
 
+public protocol StoryboardSelfInjectable {
+    func didInstantiateFromStoryboard()
+}
+
 extension NSObject {
     private enum AssociatedKeys {
         static var initialization = "NInject.isInitializedFromDI"
@@ -56,7 +60,11 @@ extension NSObject {
         }
         isInitializedFromDI = true
 
-        NSObject.container?.resolveStoryboardable(self)
+        if let storyboardable = self as? StoryboardSelfInjectable {
+            storyboardable.didInstantiateFromStoryboard()
+        } else {
+            NSObject.container?.resolveStoryboardable(self)
+        }
     }
 }
 
