@@ -6,9 +6,13 @@ class Container {
 
     private var storages: [String: Storage] = [:]
     private var storyboards: [String: Storyboardable] = [:]
+    private let strongRefCycle: Bool
 
     public init(assemblies: [Assembly],
-                storyboardable: Bool = false) {
+                storyboardable: Bool = false,
+                strongRefCycle: Bool = false) {
+        self.strongRefCycle = strongRefCycle
+
         assemblies.forEach({ $0.assemble(with: self) })
 
         if storyboardable {
@@ -34,7 +38,10 @@ class Container {
         let key = self.key(object)
         let storyboard = storyboards[key]
 
-        assert(!storyboard.isNil, "\(key) is not registered")
+        if strongRefCycle {
+            assert(!storyboard.isNil, "\(key) is not registered")
+        }
+
         storyboard?(object, self)
     }
 
@@ -107,7 +114,10 @@ extension Container: Resolver {
 
 extension Container /* Storyboardable */ {
     private func makeStoryboardable() {
-        assert(NSObject.container.isNil, "storyboard handler was registered twice")
+        if strongRefCycle {
+            assert(NSObject.container.isNil, "storyboard handler was registered twice")
+        }
+
         NSObject.container = self
     }
 }
