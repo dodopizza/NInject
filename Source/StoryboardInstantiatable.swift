@@ -3,7 +3,7 @@ import UIKit
 import ObjectiveC
 
 public protocol StoryboardSelfInjectable {
-    func didInstantiateFromStoryboard()
+    func didInstantiateFromStoryboard() -> Bool
 }
 
 extension NSObject {
@@ -60,11 +60,11 @@ extension NSObject {
         }
         isInitializedFromDI = true
 
-        if let storyboardable = self as? StoryboardSelfInjectable {
-            storyboardable.didInstantiateFromStoryboard()
-        } else {
-            NSObject.container?.resolveStoryboardable(self)
+        if let storyboardable = self as? StoryboardSelfInjectable, storyboardable.didInstantiateFromStoryboard() {
+            return
         }
+
+        NSObject.container?.resolveStoryboardable(self)
     }
 }
 
