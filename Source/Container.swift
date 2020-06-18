@@ -57,6 +57,33 @@ class Container {
 }
 
 extension Container: Registrator {
+    public func override<T>(_ type: T.Type, options: Options, _ entity: @escaping (Resolver, Arguments, () -> T) -> T) -> Forwarding {
+        let key = self.key(type)
+
+        switch storages[key]?.accessLevel {
+        case .final?:
+            assert(storages[key].isNil, "\(type) is already registered")
+        case .open?,
+             .none:
+            break
+        }
+
+        let storage: Storage
+        fatalError()
+//        let accessLevel = options.accessLevel
+//        switch options.entityKind {
+//        case .container:
+//            storage = ContainerStorage(accessLevel: accessLevel, generator: entity)
+//        case .transient:
+//            storage = TransientStorage(accessLevel: accessLevel, generator: entity)
+//        case .weak:
+//            storage = WeakStorage(accessLevel: accessLevel, generator: entity)
+//        }
+
+        storages[key] = storage
+        return Forwarder(container: self, storage: storage)
+    }
+
     public func registerStoryboardable<T>(_ type: T.Type,
                                           _ entity: @escaping (T, Resolver) -> Void) {
         let key = self.key(type)
@@ -86,11 +113,11 @@ extension Container: Registrator {
         let accessLevel = options.accessLevel
         switch options.entityKind {
         case .container:
-            storage = ContainerStorage(accessLevel: accessLevel, generator: entity)
+            storage = ContainerStorage(accessLevel: accessLevel, generator: { r, a, _ in entity(r, a) })
         case .transient:
-            storage = TransientStorage(accessLevel: accessLevel, generator: entity)
+            storage = TransientStorage(accessLevel: accessLevel, generator: { r, a, _ in entity(r, a) })
         case .weak:
-            storage = WeakStorage(accessLevel: accessLevel, generator: entity)
+            storage = WeakStorage(accessLevel: accessLevel, generator: { r, a, _ in entity(r, a) })
         }
 
         storages[key] = storage
@@ -107,8 +134,12 @@ extension Container: ForwardRegistrator {
 }
 
 extension Container: Resolver {
+    public func optionalResolve<T>(_ type: T.Type, with arguments: Arguments, parent: () -> T) -> T? {
+        return storages[key(type)]?.resolve(with: self, arguments: arguments, parent: parent) as? T
+    }
+
     public func optionalResolve<T>(_ type: T.Type, with arguments: Arguments) -> T? {
-        return storages[key(type)]?.resolve(with: self, arguments: arguments) as? T
+        return storages[key(type)]?.resolve(with: self, arguments: arguments, parent: nil) as? T
     }
 }
 
