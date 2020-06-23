@@ -10,6 +10,7 @@ class FakeForwarding: Forwarding, Spryable {
 
     enum Function: String, StringRepresentable {
         case implements = "implements(_:)"
+        case implementsNamed = "implements(_:named:)"
     }
 
     init() {
@@ -17,5 +18,9 @@ class FakeForwarding: Forwarding, Spryable {
 
     func implements<T>(_ type: T.Type) -> Self {
         return spryify(arguments: type)
+    }
+
+    func implements<T>(_ type: T.Type, named: String) -> Self {
+        return spryify(arguments: type, named)
     }
 }

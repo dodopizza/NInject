@@ -2,6 +2,7 @@ import Foundation
 
 public protocol Resolver {
     func optionalResolve<T>(_ type: T.Type, with arguments: Arguments) -> T?
+    func optionalResolve<T>(_ type: T.Type, named: String, with arguments: Arguments) -> T?
 }
 
 // MARK: - strong ref type
@@ -24,6 +25,25 @@ public extension Resolver {
         }
         fatalError("can't resolve dependency of <\(type)>")
     }
+
+    func resolve<T>(_ type: T.Type, named: String) -> T {
+        resolve(type, named: named, with: [])
+    }
+
+    func resolve<T>(named: String, with arguments: Arguments) -> T {
+        resolve(T.self, named: named, with: arguments)
+    }
+
+    func resolve<T>(named: String) -> T {
+        resolve(T.self, named: named, with: [])
+    }
+
+    func resolve<T>(_ type: T.Type, named: String, with arguments: Arguments) -> T {
+        if let value = optionalResolve(type, named: named, with: arguments) {
+            return value
+        }
+        fatalError("can't resolve dependency of <\(type)>")
+    }
 }
 
 // MARK: - optional
@@ -38,5 +58,17 @@ public extension Resolver {
 
     func optionalResolve<T>() -> T? {
         optionalResolve(T.self, with: [])
+    }
+
+    func optionalResolve<T>(_ type: T.Type, named: String) -> T? {
+        optionalResolve(type, named: named, with: [])
+    }
+
+    func optionalResolve<T>(named: String, with arguments: Arguments) -> T? {
+        optionalResolve(T.self, named: named, with: arguments)
+    }
+
+    func optionalResolve<T>(named: String) -> T? {
+        optionalResolve(T.self, named: named, with: [])
     }
 }

@@ -24,9 +24,7 @@ extension Impl.ViewControllerFactory: ViewControllerFactory {
             fatalError("wrong type of VC")
         }
 
-        if !controller.isInitializedFromDI {
-            container.resolveStoryboardable(controller)
-        }
+        controller.resolveDependenciesManually()
 
         return controller
     }

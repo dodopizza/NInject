@@ -35,7 +35,7 @@ class Container {
     }
 
     func resolveStoryboardable(_ object: Any) {
-        let key = self.key(object)
+        let key = self.key(object, name: nil)
         let storyboard = storyboards[key]
 
         if strongRefCycle {
@@ -45,22 +45,26 @@ class Container {
         storyboard?(object, self)
     }
 
-    private func key<T>(_: T) -> String {
+    private func key<T>(_: T, name: String?) -> String {
         let key = String(reflecting: T.self).normalized
-        return key
+        return name.map({ key + "_" + $0 }) ?? key
     }
 
-    private func key(_ obj: Any) -> String {
+    private func key(_ obj: Any, name: String?) -> String {
         let key = String(reflecting: type(of: obj)).normalized
-        return key
+        return name.map({ key + "_" + $0 }) ?? key
     }
 }
 
 extension Container: Registrator {
     public func registerStoryboardable<T>(_ type: T.Type,
                                           _ entity: @escaping (T, Resolver) -> Void) {
-        let key = self.key(type)
-        assert(storyboards[key].isNil, "\(type) is already registered")
+        let key = self.key(type, name: nil)
+
+        if strongRefCycle {
+            assert(storyboards[key].isNil, "\(type) is already registered")
+        }
+
         storyboards[key] = { c, r in
             if let c = c as? T {
                 entity(c, r)
@@ -72,7 +76,7 @@ extension Container: Registrator {
     public func register<T>(_ type: T.Type,
                             options: Options = .default,
                             _ entity: @escaping (Resolver, _ arguments: Arguments) -> T) -> Forwarding {
-        let key = self.key(type)
+        let key = self.key(type, name: options.name)
 
         switch storages[key]?.accessLevel {
         case .final?:
@@ -99,16 +103,34 @@ extension Container: Registrator {
 }
 
 extension Container: ForwardRegistrator {
+    func register<T>(_ type: T.Type, named: String, storage: Storage) {
+        let key = self.key(type, name: nil)
+
+        if strongRefCycle {
+            assert(storages[key].isNil, "\(type) is already registered")
+        }
+
+        storages[key] = storage
+    }
+
     func register<T>(_ type: T.Type, storage: Storage) {
-        let key = self.key(type)
-        assert(storages[key].isNil, "\(type) is already registered")
+        let key = self.key(type, name: nil)
+
+        if strongRefCycle {
+            assert(storages[key].isNil, "\(type) is already registered")
+        }
+        
         storages[key] = storage
     }
 }
 
 extension Container: Resolver {
     public func optionalResolve<T>(_ type: T.Type, with arguments: Arguments) -> T? {
-        return storages[key(type)]?.resolve(with: self, arguments: arguments) as? T
+        return storages[key(type, name: nil)]?.resolve(with: self, arguments: arguments) as? T
+    }
+
+    public func optionalResolve<T>(_ type: T.Type, named: String, with arguments: Arguments) -> T? {
+        return storages[key(type, name: named)]?.resolve(with: self, arguments: arguments) as? T
     }
 }
 
