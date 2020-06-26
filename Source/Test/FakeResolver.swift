@@ -3,6 +3,7 @@ import Spry
 
 import NInject
 
+final
 class FakeResolver: Resolver, Spryable {
     enum ClassFunction: String, StringRepresentable {
         case empty

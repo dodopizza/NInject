@@ -3,6 +3,7 @@ import Spry
 
 import NInject
 
+final
 class FakeRegistrator: Registrator, Spryable {
     enum ClassFunction: String, StringRepresentable {
         case empty
