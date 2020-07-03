@@ -62,7 +62,7 @@ extension Container: Registrator {
         let key = self.key(type, name: nil)
 
         if strongRefCycle {
-            assert(storyboards[key].isNil, "\(type) is already registered")
+            assert(storyboards[key].isNil, "\(type) is already registered with \(key)")
         }
 
         storyboards[key] = { c, r in
@@ -81,7 +81,7 @@ extension Container: Registrator {
         if let found = storages[key] {
             switch found.accessLevel {
             case .final:
-                assert(false, "\(type) is already registered")
+                assert(false, "\(type) is already registered with \(key)")
             case .open:
                 break
             }
@@ -110,7 +110,7 @@ extension Container: ForwardRegistrator {
         if let found = storages[key] {
             switch found.accessLevel {
             case .final:
-                assert(false, "\(type) is already registered")
+                assert(false, "\(type) is already registered with \(key)")
             case .open:
                 break
             }
@@ -125,7 +125,7 @@ extension Container: ForwardRegistrator {
         if let found = storages[key] {
             switch found.accessLevel {
             case .final:
-                assert(false, "\(type) is already registered")
+                assert(false, "\(type) is already registered with \(key)")
             case .open:
                 break
             }

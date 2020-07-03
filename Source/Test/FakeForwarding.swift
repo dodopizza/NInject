@@ -12,6 +12,8 @@ class FakeForwarding: Forwarding, Spryable {
     enum Function: String, StringRepresentable {
         case implements = "implements(_:)"
         case implementsNamed = "implements(_:named:)"
+        case implementsAccessLevel = "implements(_:accessLevel:)"
+        case implementsNamedAccessLevel = "implements(_:named:accessLevel:)"
     }
 
     init() {
@@ -23,5 +25,13 @@ class FakeForwarding: Forwarding, Spryable {
 
     func implements<T>(_ type: T.Type, named: String) -> Self {
         return spryify(arguments: type, named)
+    }
+
+    func implements<T>(_ type: T.Type, accessLevel: Options.AccessLevel) -> Self {
+        return spryify(arguments: type, accessLevel)
+    }
+
+    func implements<T>(_ type: T.Type, named: String, accessLevel: Options.AccessLevel) -> Self {
+        return spryify(arguments: type, named, accessLevel)
     }
 }

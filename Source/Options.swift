@@ -8,6 +8,8 @@ public struct Options: Equatable {
         init() {
             self = .final
         }
+
+        public static let forwarding: AccessLevel = .final
     }
 
     public enum EntityKind: Equatable {

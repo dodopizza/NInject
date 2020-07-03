@@ -2,6 +2,12 @@ import Foundation
 
 public protocol Forwarding {
     @discardableResult
+    func implements<T>(_ type: T.Type, accessLevel: Options.AccessLevel) -> Self
+
+    @discardableResult
+    func implements<T>(_ type: T.Type, named: String, accessLevel: Options.AccessLevel) -> Self
+
+    @discardableResult
     func implements<T>(_ type: T.Type) -> Self
 
     @discardableResult
@@ -24,14 +30,26 @@ struct Forwarder: Forwarding {
     }
 
     @discardableResult
-    func implements<K>(_ type: K.Type) -> Self {
-        container.register(type, storage: storage)
+    func implements<T>(_ type: T.Type, accessLevel: Options.AccessLevel) -> Self {
+        container.register(type, storage: ForwardingStorage(storage: storage, accessLevel: accessLevel))
         return self
     }
 
     @discardableResult
-    func implements<K>(_ type: K.Type, named: String) -> Self {
-        container.register(type, named: named, storage: storage)
+    func implements<T>(_ type: T.Type, named: String, accessLevel: Options.AccessLevel) -> Self {
+        container.register(type, named: named, storage: ForwardingStorage(storage: storage, accessLevel: accessLevel))
+        return self
+    }
+
+    @discardableResult
+    func implements<T>(_ type: T.Type) -> Forwarder {
+        container.register(type, storage: ForwardingStorage(storage: storage))
+        return self
+    }
+
+    @discardableResult
+    func implements<T>(_ type: T.Type, named: String) -> Forwarder {
+        container.register(type, named: named, storage: ForwardingStorage(storage: storage))
         return self
     }
 }
