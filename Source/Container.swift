@@ -78,12 +78,13 @@ extension Container: Registrator {
                             _ entity: @escaping (Resolver, _ arguments: Arguments) -> T) -> Forwarding {
         let key = self.key(type, name: options.name)
 
-        switch storages[key]?.accessLevel {
-        case .final?:
-            assert(storages[key].isNil, "\(type) is already registered")
-        case .open?,
-             .none:
-            break
+        if let found = storages[key] {
+            switch found.accessLevel {
+            case .final:
+                assert(false, "\(type) is already registered")
+            case .open:
+                break
+            }
         }
 
         let storage: Storage
@@ -104,10 +105,15 @@ extension Container: Registrator {
 
 extension Container: ForwardRegistrator {
     func register<T>(_ type: T.Type, named: String, storage: Storage) {
-        let key = self.key(type, name: nil)
+        let key = self.key(type, name: named)
 
-        if strongRefCycle {
-            assert(storages[key].isNil, "\(type) is already registered")
+        if let found = storages[key] {
+            switch found.accessLevel {
+            case .final:
+                assert(false, "\(type) is already registered")
+            case .open:
+                break
+            }
         }
 
         storages[key] = storage
@@ -116,10 +122,15 @@ extension Container: ForwardRegistrator {
     func register<T>(_ type: T.Type, storage: Storage) {
         let key = self.key(type, name: nil)
 
-        if strongRefCycle {
-            assert(storages[key].isNil, "\(type) is already registered")
+        if let found = storages[key] {
+            switch found.accessLevel {
+            case .final:
+                assert(false, "\(type) is already registered")
+            case .open:
+                break
+            }
         }
-        
+
         storages[key] = storage
     }
 }
