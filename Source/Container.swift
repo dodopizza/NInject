@@ -156,8 +156,15 @@ extension Container /* Storyboardable */ {
 }
 
 private extension String {
+    var unwrapped: String {
+        if hasPrefix("Swift.Optional") {
+            return replacingOccurrences(of: "Swift.Optional<", with: "").replacingOccurrences(of: ">", with: "")
+        }
+        return self
+    }
+
     var normalized: String {
-        components(separatedBy: ".").filter({ $0 != "Type" && $0 != "Protocol" }).joined(separator: ".")
+        return unwrapped.components(separatedBy: ".").filter({ $0 != "Type" && $0 != "Protocol" }).joined(separator: ".")
     }
 }
 
