@@ -7,6 +7,14 @@ public struct Arguments: ExpressibleByArrayLiteral {
         self.elements = elements
     }
 
+    public func optionalResolve<T>(_ type: T.Type, at index: Int) -> T? {
+        return elements.indices.contains(index) ? elements[index] as? T : nil
+    }
+
+    public func optionalResolve<T>(at index: Int) -> T? {
+        optionalResolve(T.self, at: index)
+    }
+
     public func resolve<T>(_ type: T.Type, at index: Int) -> T {
         // swiftlint:disable:next force_cast
         elements[index] as! T
