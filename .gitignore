@@ -5,14 +5,17 @@
 xcuserdata/
 
 ## Package Managers
-**/Pods/
-**/Carthage/
+Pods/*
+Carthage/*
+Packages/*
+.swiftpm/*
 
 ## Bundler
-**/.bundle/
-**/bin/
-**/.bin/
+.bundle/
+bin/
+.bin/
+.vendor/
 
 ## XCode local data
-**/Build/
-**/DerivedData/
+Build/
+DerivedData/

@@ -23,7 +23,7 @@ class NViewControllerFactorySpec: QuickSpec {
                 var viewController: TestViewController?
 
                 beforeEach {
-                    viewController = subject.instantiate()
+                    viewController = subject.instantiate(bundle: .module)
                 }
 
                 it("should create corresponded view controller") {
@@ -35,7 +35,7 @@ class NViewControllerFactorySpec: QuickSpec {
                 var navigationController: (UINavigationController, TestViewController)?
 
                 beforeEach {
-                    navigationController = subject.createNavigationController()
+                    navigationController = subject.createNavigationController(bundle: .module)
                 }
 
                 it("should create corresponded navigation controller") {
