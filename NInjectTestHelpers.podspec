@@ -27,8 +27,17 @@ Pod::Spec.new do |spec|
 
     spec.test_spec 'Tests' do |tests|
       tests.requires_app_host = false
+      tests.test_type = :unit
+
+      tests.dependency 'Nimble'
+      tests.dependency 'Spry'
+      tests.dependency 'Quick'
+      tests.dependency 'Spry+Nimble'
+
+      tests.frameworks = 'XCTest', 'Foundation'
 
       tests.source_files = 'Tests/Specs/**/*.swift'
-      tests.ios.resource_bundle = {'NInjectTests' => 'Tests/Specs/**/*.{xib,storyboard,xcassets}'}
+      tests.resources = ['Tests/Specs/**/*.{storyboard,xib,xcassets,json,imageset,png,strings,stringsdict}']
+      tests.exclude_files = '**/SPM/**/*.*'
     end
 end

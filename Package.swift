@@ -22,17 +22,22 @@ let package = Package(
                 dependencies: [],
                 path: "Source"),
         .target(name: "NInjectTestHelpers",
-                dependencies: ["NInject",
-                               "Spry"],
+                dependencies: [
+                    "NInject",
+                    "Spry"
+                ],
                 path: "TestHelpers"),
         .testTarget(name: "NInjectTests",
-                    dependencies: ["NInject",
-                                   "NInjectTestHelpers",
-                                   "Spry",
-                                   .product(name: "Spry_Nimble", package: "Spry"),
-                                   "Nimble",
-                                   "Quick"],
-                    path: "Tests/Specs"
+                    dependencies: [
+                        "NInject",
+                        "NInjectTestHelpers",
+                        "Spry",
+                        .product(name: "Spry_Nimble", package: "Spry"),
+                        "Nimble",
+                        "Quick"
+                    ],
+                    path: "Tests/Specs",
+                    exclude: ["Resources/cocoapods"]
         )
     ],
     swiftLanguageVersions: [.v5]

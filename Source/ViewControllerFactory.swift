@@ -39,7 +39,7 @@ extension Impl.ViewControllerFactory: ViewControllerFactory {
     }
 }
 
-extension ViewControllerFactory {
+public extension ViewControllerFactory {
     func instantiate<T: UIViewController>(_ type: T.Type, from nibName: String?, bundle: Bundle) -> T {
         return instantiate(from: nibName, bundle: bundle)
     }
@@ -48,11 +48,11 @@ extension ViewControllerFactory {
         return instantiate(from: nil, bundle: bundle)
     }
 
-    public func instantiate<T: UIViewController>(bundle: Bundle) -> T {
+    func instantiate<T: UIViewController>(bundle: Bundle) -> T {
         return instantiate(from: nil, bundle: bundle)
     }
 
-    public func createNavigationController<T, N>(bundle: Bundle) -> (navigation: N, root: T) where T: UIViewController, N: UINavigationController {
+    func createNavigationController<T, N>(bundle: Bundle) -> (navigation: N, root: T) where T: UIViewController, N: UINavigationController {
         return createNavigationController(from: nil, bundle: bundle)
     }
 }
