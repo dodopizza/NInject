@@ -55,4 +55,8 @@ public extension ViewControllerFactory {
     func createNavigationController<T, N>(bundle: Bundle) -> (navigation: N, root: T) where T: UIViewController, N: UINavigationController {
         return createNavigationController(from: nil, bundle: bundle)
     }
+
+    func createNavigationController<T, N>(_: T.Type, bundle: Bundle) -> (navigation: N, root: T) where T: UIViewController, N: UINavigationController {
+        return createNavigationController(from: nil, bundle: bundle)
+    }
 }
