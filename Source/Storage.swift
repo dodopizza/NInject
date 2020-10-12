@@ -67,8 +67,23 @@ class WeakStorage: Storage {
             return entity
         }
 
-        let entity = generator(resolver, arguments) as AnyObject
-        self.entity = { [weak entity] in return entity }
+        let entity = generator(resolver, arguments)
+        if #available(iOS 13, *) {
+            let wrapped = entity as AnyObject
+            self.entity = { [weak wrapped] in
+                return wrapped
+            }
+        } else {
+            // iOS 12.4 has crash when eventually resolving code `entity as AnyObject` and return `nil`
+            // while registered object is `struct` (not class)
+            let wrapped = NSValue(nonretainedObject: entity)
+            self.entity = { [weak wrapped] in
+                var pointer: Entity?
+                wrapped?.getValue(&pointer)
+                return pointer
+            }
+        }
+
         return entity
     }
 }
