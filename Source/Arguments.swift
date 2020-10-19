@@ -28,4 +28,12 @@ public struct Arguments: ExpressibleByArrayLiteral {
         // swiftlint:disable:next force_cast
         elements[index] as! T
     }
+
+    public func optionalFirst<T>(_ type: T.Type) -> T? {
+        elements.lazy.compactMap({ $0 as? T }).first
+    }
+
+    public func optionalFirst<T>(_ type: T.Type) -> T {
+        optionalFirst(type)!
+    }
 }
