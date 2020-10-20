@@ -29,11 +29,11 @@ public struct Arguments: ExpressibleByArrayLiteral {
         elements[index] as! T
     }
 
-    public func optionalFirst<T>(_ type: T.Type) -> T? {
+    public func optionalFirst<T>(_ type: T.Type = T.self) -> T? {
         elements.lazy.compactMap({ $0 as? T }).first
     }
 
-    public func optionalFirst<T>(_ type: T.Type) -> T {
+    public func optionalFirst<T>(_ type: T.Type = T.self) -> T {
         optionalFirst(type)!
     }
 }
