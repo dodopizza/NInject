@@ -33,7 +33,7 @@ public struct Arguments: ExpressibleByArrayLiteral {
         elements.lazy.compactMap({ $0 as? T }).first
     }
 
-    public func optionalFirst<T>(_ type: T.Type = T.self) -> T {
+    public func first<T>(_ type: T.Type = T.self) -> T {
         optionalFirst(type)!
     }
 }
