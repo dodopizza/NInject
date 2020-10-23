@@ -3,8 +3,8 @@ Pod::Spec.new do |spec|
     spec.version      = "1.0.0"
     spec.summary      = "NInject is Dependency Injection framework"
 
-    spec.source       = { :git => "https://bitbucket.org/tech4star/NInject.git" }
-    spec.homepage     = "https://bitbucket.org/tech4star/NInject.git"
+    spec.source       = { :git => "git@github.com:NikSativa/NInject.git" }
+    spec.homepage     = "https://github.com/NikSativa/NInject"
 
     spec.license          = 'MIT'
     spec.author           = { "Nikita Konopelko" => "nik.sativa@gmail.com" }
