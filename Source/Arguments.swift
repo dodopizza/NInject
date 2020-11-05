@@ -1,9 +1,13 @@
 import Foundation
 
-public struct Arguments: ExpressibleByArrayLiteral {
+public struct Arguments {
     private let elements: [Any]
 
-    public init(arrayLiteral elements: Any...) {
+    public init(_ elements: [Any]) {
+        self.elements = elements
+    }
+
+    public init(_ elements: Any...) {
         self.elements = elements
     }
 

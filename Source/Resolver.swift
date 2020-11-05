@@ -7,12 +7,36 @@ public protocol Resolver {
 
 // MARK: - strong ref type
 public extension Resolver {
+    func optionalResolve<T>(_ type: T.Type, with arguments: [Any]) -> T? {
+        optionalResolve(type, with: Arguments(arguments))
+    }
+
+    func optionalResolve<T>(_ type: T.Type, with arguments: Any...) -> T? {
+        optionalResolve(type, with: Arguments(arguments))
+    }
+
+    func optionalResolve<T>(_ type: T.Type, named: String, with arguments: [Any]) -> T? {
+        optionalResolve(type, named: named, with: Arguments(arguments))
+    }
+
+    func optionalResolve<T>(_ type: T.Type, named: String, with arguments: Any...) -> T? {
+        optionalResolve(type, named: named, with: Arguments(arguments))
+    }
+
     func resolve<T>(_ type: T.Type) -> T {
         resolve(type, with: [])
     }
 
     func resolve<T>(with arguments: Arguments) -> T {
         resolve(T.self, with: arguments)
+    }
+
+    func resolve<T>(with arguments: [Any]) -> T {
+        resolve(with: Arguments(arguments))
+    }
+
+    func resolve<T>(with arguments: Any...) -> T {
+        resolve(with: Arguments(arguments))
     }
 
     func resolve<T>() -> T {
@@ -26,12 +50,28 @@ public extension Resolver {
         fatalError("can't resolve dependency of <\(type)>")
     }
 
+    func resolve<T>(_ type: T.Type, with arguments: [Any]) -> T {
+        resolve(type, with: Arguments(arguments))
+    }
+
+    func resolve<T>(_ type: T.Type, with arguments: Any...) -> T {
+        resolve(type, with: Arguments(arguments))
+    }
+
     func resolve<T>(_ type: T.Type, named: String) -> T {
         resolve(type, named: named, with: [])
     }
 
     func resolve<T>(named: String, with arguments: Arguments) -> T {
         resolve(T.self, named: named, with: arguments)
+    }
+
+    func resolve<T>(named: String, with arguments: [Any]) -> T {
+        resolve(named: named, with: Arguments(arguments))
+    }
+
+    func resolve<T>(named: String, with arguments: Any...) -> T {
+        resolve(named: named, with: Arguments(arguments))
     }
 
     func resolve<T>(named: String) -> T {
@@ -43,6 +83,14 @@ public extension Resolver {
             return value
         }
         fatalError("can't resolve dependency of <\(type)>")
+    }
+
+    func resolve<T>(_ type: T.Type, named: String, with arguments: [Any]) -> T {
+        resolve(type, named: named, with: Arguments(arguments))
+    }
+
+    func resolve<T>(_ type: T.Type, named: String, with arguments: Any...) -> T {
+        resolve(type, named: named, with: Arguments(arguments))
     }
 }
 

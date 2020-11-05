@@ -13,7 +13,7 @@ class Container {
                 strongRefCycle: Bool = false) {
         self.strongRefCycle = strongRefCycle
 
-        assemblies.forEach({ $0.assemble(with: self) })
+        assemblies.unified().forEach({ $0.assemble(with: self) })
 
         if storyboardable {
             makeStoryboardable()
@@ -176,5 +176,20 @@ private extension Optional {
         case .some:
             return false
         }
+    }
+}
+
+private extension Array where Element == Assembly {
+    func unified() -> [Element] {
+        var keys: Set<String> = []
+        let unified = filter {
+            let key = String(reflecting: type(of: $0))
+            if keys.contains(key) {
+                return false
+            }
+            keys.insert(key)
+            return true
+        }
+        return unified
     }
 }
