@@ -104,6 +104,14 @@ public extension Resolver {
         optionalResolve(T.self, with: arguments)
     }
 
+    func optionalResolve<T>(with arguments: [Any]) -> T? {
+        optionalResolve(T.self, with: Arguments(arguments))
+    }
+
+    func optionalResolve<T>(with arguments: Any...) -> T? {
+        optionalResolve(T.self, with: Arguments(arguments))
+    }
+
     func optionalResolve<T>() -> T? {
         optionalResolve(T.self, with: [])
     }
@@ -114,6 +122,14 @@ public extension Resolver {
 
     func optionalResolve<T>(named: String, with arguments: Arguments) -> T? {
         optionalResolve(T.self, named: named, with: arguments)
+    }
+
+    func optionalResolve<T>(named: String, with arguments: [Any]) -> T? {
+        optionalResolve(T.self, named: named, with: Arguments(arguments))
+    }
+
+    func optionalResolve<T>(named: String, with arguments: Any...) -> T? {
+        optionalResolve(T.self, named: named, with: Arguments(arguments))
     }
 
     func optionalResolve<T>(named: String) -> T? {
