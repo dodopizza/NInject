@@ -45,8 +45,8 @@ class Container {
         storyboard?(object, self)
     }
 
-    private func key<T>(_: T, name: String?) -> String {
-        let key = String(reflecting: T.self).normalized
+    private func key<T>(_ type: T, name: String?) -> String {
+        let key = String(reflecting: type).normalized
         return name.map({ key + "_" + $0 }) ?? key
     }
 
@@ -79,10 +79,13 @@ extension Container: Registrator {
         let key = self.key(type, name: options.name)
 
         if let found = storages[key] {
-            switch found.accessLevel {
-            case .final:
+            switch (found.accessLevel, options.accessLevel) {
+            case (.final, .final):
                 assert(false, "\(type) is already registered with \(key)")
-            case .open:
+            case (.final, .open):
+                // ignore `open` due to final realisation
+                return Forwarder(container: self, storage: found)
+            case (.open, _):
                 break
             }
         }
@@ -137,11 +140,15 @@ extension Container: ForwardRegistrator {
 
 extension Container: Resolver {
     public func optionalResolve<T>(_ type: T.Type, with arguments: Arguments) -> T? {
-        return storages[key(type, name: nil)]?.resolve(with: self, arguments: arguments) as? T
+        let key = self.key(type, name: nil)
+        let storage = storages[key]
+        return storage?.resolve(with: self, arguments: arguments) as? T
     }
 
     public func optionalResolve<T>(_ type: T.Type, named: String, with arguments: Arguments) -> T? {
-        return storages[key(type, name: named)]?.resolve(with: self, arguments: arguments) as? T
+        let key = self.key(type, name: named)
+        let storage = storages[key]
+        return storage?.resolve(with: self, arguments: arguments) as? T
     }
 }
 
@@ -157,14 +164,14 @@ extension Container /* Storyboardable */ {
 
 private extension String {
     var unwrapped: String {
-        if hasPrefix("Swift.Optional") {
-            return replacingOccurrences(of: "Swift.Optional<", with: "").replacingOccurrences(of: ">", with: "")
+        if hasPrefix("Swift.Optional<") {
+            return String(dropFirst("Swift.Optional<".count).dropLast(1))
         }
         return self
     }
 
     var normalized: String {
-        return unwrapped.components(separatedBy: ".").filter({ $0 != "Type" && $0 != "Protocol" }).joined(separator: ".")
+        return components(separatedBy: ".").filter({ $0 != "Type" && $0 != "Protocol" }).joined(separator: ".").unwrapped
     }
 }
 
