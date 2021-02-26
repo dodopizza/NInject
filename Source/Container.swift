@@ -34,8 +34,17 @@ class Container {
         self.init(assemblies: assemblies, storyboardable: storyboardable)
     }
 
+    func resolveStoryboardable<T>(_ object: Any, as type: T, name: String? = nil) {
+        let key = self.key(type, name: name)
+        resolveStoryboardable(object, by: key)
+    }
+
     func resolveStoryboardable(_ object: Any) {
         let key = self.key(object, name: nil)
+        resolveStoryboardable(object, by: key)
+    }
+
+    func resolveStoryboardable(_ object: Any, by key: String) {
         let storyboard = storyboards[key]
 
         if strongRefCycle {

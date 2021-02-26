@@ -54,17 +54,29 @@ extension NSObject {
         resolveDependencies()
     }
 
-    private func resolveDependencies() {
+    public func resolveDependencies<T>(as type: T, name: String? = nil) {
+        if isInitializationNeeded() {
+            NSObject.container?.resolveStoryboardable(self, as: type, name: name)
+        }
+    }
+
+    private func isInitializationNeeded() -> Bool {
         if isInitializedFromDI {
-            return
+            return false
         }
         isInitializedFromDI = true
 
         if let storyboardable = self as? StoryboardSelfInjectable, storyboardable.didInstantiateFromStoryboard() {
-            return
+            return false
         }
 
-        NSObject.container?.resolveStoryboardable(self)
+        return true
+    }
+
+    private func resolveDependencies() {
+        if isInitializationNeeded() {
+            NSObject.container?.resolveStoryboardable(self)
+        }
     }
 }
 
