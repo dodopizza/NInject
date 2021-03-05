@@ -20,21 +20,12 @@ Pod::Spec.new do |spec|
     spec.dependency 'Spry'
     spec.dependency 'Quick'
     spec.dependency 'Spry+Nimble'
-
     spec.dependency 'NInject'
 
-    spec.frameworks = 'XCTest', 'Foundation'
+    spec.frameworks = 'XCTest', 'Foundation', 'UIKit'
 
     spec.test_spec 'Tests' do |tests|
-      tests.requires_app_host = false
-      tests.test_type = :unit
-
-      tests.dependency 'Nimble'
-      tests.dependency 'Spry'
-      tests.dependency 'Quick'
-      tests.dependency 'Spry+Nimble'
-
-      tests.frameworks = 'XCTest', 'Foundation'
+#      tests.requires_app_host = false
 
       tests.source_files = 'Tests/Specs/**/*.swift'
       tests.resources = ['Tests/Specs/**/*.{storyboard,xib,xcassets,json,imageset,png,strings,stringsdict}']
