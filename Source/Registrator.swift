@@ -4,12 +4,17 @@ import UIKit
 public protocol Registrator {
     @discardableResult
     func register<T>(_ type: T.Type, options: Options, _ entity: @escaping (Resolver, _ arguments: Arguments) -> T) -> Forwarding
+    func registration<T>(for type: T.Type, name: String?) -> Forwarding
 
     func registerStoryboardable<T>(_ type: T.Type, _ entity: @escaping (T, Resolver) -> Void)
     func registerViewController<T: UIViewController>(_ type: T.Type, _ entity: @escaping (T, Resolver) -> Void)
 }
 
 public extension Registrator {
+    func registration<T>(for type: T.Type, name: String? = nil) -> Forwarding {
+        return registration(for: type, name: name)
+    }
+
     func registerViewController<T: UIViewController>(_ type: T.Type, _ entity: @escaping (T, Resolver) -> Void) {
         registerStoryboardable(type, entity)
     }

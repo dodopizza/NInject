@@ -66,6 +66,16 @@ class Container {
 }
 
 extension Container: Registrator {
+    public func registration<T>(for type: T.Type, name: String?) -> Forwarding {
+        let key = self.key(type, name: name)
+
+        guard let storage = storages[key] else {
+            fatalError("can't resolve dependency of <\(type)>")
+        }
+        
+        return Forwarder(container: self, storage: storage)
+    }
+
     public func registerStoryboardable<T>(_ type: T.Type,
                                           _ entity: @escaping (T, Resolver) -> Void) {
         let key = self.key(type, name: nil)
