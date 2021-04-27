@@ -14,7 +14,7 @@ public protocol Forwarding {
     func implements<T>(_ type: T.Type, named: String) -> Self
 }
 
-protocol ForwardRegistrator: class {
+protocol ForwardRegistrator: AnyObject {
     func register<T>(_ type: T.Type, storage: Storage)
     func register<T>(_ type: T.Type, named: String, storage: Storage)
 }
