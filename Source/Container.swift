@@ -13,7 +13,10 @@ class Container {
                 strongRefCycle: Bool = false) {
         self.strongRefCycle = strongRefCycle
 
-        assemblies.unified().forEach({ $0.assemble(with: self) })
+        let allAssemblies = assemblies.flatMap(\.allDependencies).unified()
+        for assembly in allAssemblies {
+            assembly.assemble(with: self)
+        }
 
         if storyboardable {
             makeStoryboardable()
@@ -209,7 +212,7 @@ private extension Array where Element == Assembly {
     func unified() -> [Element] {
         var keys: Set<String> = []
         let unified = filter {
-            let key = String(reflecting: type(of: $0))
+            let key = $0.id
             if keys.contains(key) {
                 return false
             }
@@ -217,5 +220,11 @@ private extension Array where Element == Assembly {
             return true
         }
         return unified
+    }
+}
+
+private extension Assembly {
+    var allDependencies: [Assembly] {
+        return [self] + dependencies + dependencies.flatMap(\.allDependencies)
     }
 }
