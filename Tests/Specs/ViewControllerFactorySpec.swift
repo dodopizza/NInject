@@ -2,8 +2,7 @@ import Foundation
 import UIKit
 import Quick
 import Nimble
-import Spry
-import Spry_Nimble
+import NSpry
 
 @testable import NInject
 @testable import NInjectTestHelpers

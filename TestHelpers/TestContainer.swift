@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 import NInject
-import Spry
+import NSpry
 
 @testable import NInject
 
