@@ -24,7 +24,7 @@ public struct Options: Equatable {
     public static let transient: Options = .init(accessLevel: .default, entityKind: .transient)
 
     public static func named(_ name: String) -> Options {
-        .init(accessLevel: .default, entityKind: .default, name: name)
+        return .init(accessLevel: .default, entityKind: .default, name: name)
     }
 
     public let accessLevel: AccessLevel
