@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.4
 
 import PackageDescription
 
@@ -12,8 +12,8 @@ let package = Package(
         .library(name: "NInjectTestHelpers", targets: ["NInjectTestHelpers"])
     ],
     dependencies: [
-        .package(url: "https://github.com/NikSativa/Spry.git", .upToNextMajor(from: "3.4.0")),
-        .package(url: "https://github.com/Quick/Quick.git", .upToNextMajor(from: "3.1.2")),
+        .package(url: "git@github.com:NikSativa/NSpry.git", .upToNextMajor(from: "1.0.0")),
+        .package(url: "https://github.com/Quick/Quick.git", .upToNextMajor(from: "4.0.0")),
         .package(url: "https://github.com/Quick/Nimble.git", .upToNextMajor(from: "9.0.0"))
     ],
     targets: [
@@ -23,15 +23,14 @@ let package = Package(
         .target(name: "NInjectTestHelpers",
                 dependencies: [
                     "NInject",
-                    "Spry"
+                    "NSpry"
                 ],
                 path: "TestHelpers"),
         .testTarget(name: "NInjectTests",
                     dependencies: [
                         "NInject",
                         "NInjectTestHelpers",
-                        "Spry",
-                        .product(name: "Spry_Nimble", package: "Spry"),
+                        "NSpry",
                         "Nimble",
                         "Quick"
                     ],

@@ -3,8 +3,7 @@ import NSpry
 
 import NInject
 
-final
-class FakeForwarding: Forwarding, Spryable {
+final class FakeForwarding: Forwarding, Spryable {
     enum ClassFunction: String, StringRepresentable {
         case empty
     }
