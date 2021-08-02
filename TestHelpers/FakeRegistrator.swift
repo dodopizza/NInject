@@ -4,8 +4,7 @@ import NSpry
 
 import NInject
 
-final
-class FakeRegistrator: Registrator, Spryable {
+final class FakeRegistrator: Registrator, Spryable {
     enum ClassFunction: String, StringRepresentable {
         case empty
     }

@@ -4,8 +4,7 @@ import NSpry
 
 import NInject
 
-final
-class FakeViewControllerFactory: ViewControllerFactory, Spryable {
+final class FakeViewControllerFactory: ViewControllerFactory, Spryable {
     enum ClassFunction: String, StringRepresentable {
         case empty
     }

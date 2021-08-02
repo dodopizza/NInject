@@ -8,8 +8,7 @@ protocol Storage {
     func resolve(with resolver: Resolver, arguments: Arguments) -> Entity
 }
 
-final
-class ForwardingStorage: Storage {
+final class ForwardingStorage: Storage {
     let accessLevel: Options.AccessLevel
     private let storage: Storage
 
@@ -24,8 +23,7 @@ class ForwardingStorage: Storage {
     }
 }
 
-final
-class ContainerStorage: Storage {
+final class ContainerStorage: Storage {
     private var entity: Entity?
     private let generator: Generator
     let accessLevel: Options.AccessLevel
@@ -48,8 +46,7 @@ class ContainerStorage: Storage {
     }
 }
 
-final
-class WeakStorage: Storage {
+final class WeakStorage: Storage {
     private var entity: () -> Entity?
     private let generator: Generator
     let accessLevel: Options.AccessLevel
@@ -88,8 +85,7 @@ class WeakStorage: Storage {
     }
 }
 
-final
-class TransientStorage: Storage {
+final class TransientStorage: Storage {
     private let generator: Generator
     let accessLevel: Options.AccessLevel
 

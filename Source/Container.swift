@@ -1,7 +1,6 @@
 import Foundation
 
-public final
-class Container {
+public final class Container {
     private typealias Storyboardable = (Any, Resolver) -> Void
 
     private var storages: [String: Storage] = [:]

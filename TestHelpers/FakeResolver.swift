@@ -3,8 +3,7 @@ import NSpry
 
 import NInject
 
-final
-class FakeResolver: Resolver, Spryable {
+final class FakeResolver: Resolver, Spryable {
     enum ClassFunction: String, StringRepresentable {
         case empty
     }
