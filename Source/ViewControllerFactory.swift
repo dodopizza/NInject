@@ -6,8 +6,7 @@ public protocol ViewControllerFactory {
 }
 
 extension Impl {
-    final
-    class ViewControllerFactory {
+    final class ViewControllerFactory {
         private let container: Container
 
         init(container: Container) {
