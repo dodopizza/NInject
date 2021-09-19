@@ -20,7 +20,7 @@ public struct Options: Equatable {
     public static let `default`: Options = .init(accessLevel: .default, entityKind: .default)
 
     public static let container: Options = .init(accessLevel: .default, entityKind: .container)
-    public static let weak:      Options = .init(accessLevel: .default, entityKind: .weak)
+    public static let weak: Options = .init(accessLevel: .default, entityKind: .weak)
     public static let transient: Options = .init(accessLevel: .default, entityKind: .transient)
 
     public static func named(_ name: String) -> Options {
@@ -40,14 +40,14 @@ public struct Options: Equatable {
     }
 }
 
-public func + (lhs: Options, rhs: Options.EntityKind) -> Options {
+public func +(lhs: Options, rhs: Options.EntityKind) -> Options {
     return .init(accessLevel: lhs.accessLevel, entityKind: rhs, name: lhs.name)
 }
 
-public func + (lhs: Options, rhs: Options.AccessLevel) -> Options {
+public func +(lhs: Options, rhs: Options.AccessLevel) -> Options {
     return .init(accessLevel: rhs, entityKind: lhs.entityKind, name: lhs.name)
 }
 
-public func + (lhs: Options, rhs: String) -> Options {
+public func +(lhs: Options, rhs: String) -> Options {
     return .init(accessLevel: lhs.accessLevel, entityKind: lhs.entityKind, name: rhs)
 }

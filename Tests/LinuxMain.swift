@@ -1,6 +1,4 @@
-import XCTest
 import Quick
+import XCTest
 
-QCKMain([
-    ViewControllerFactorySpec.self
-])
+QCKMain([ViewControllerFactorySpec.self])

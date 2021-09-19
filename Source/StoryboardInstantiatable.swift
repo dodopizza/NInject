@@ -1,6 +1,6 @@
 import Foundation
-import UIKit
 import ObjectiveC
+import UIKit
 
 public protocol StoryboardSelfInjectable {
     func didInstantiateFromStoryboard() -> Bool
@@ -36,11 +36,11 @@ extension NSObject {
             return containerHolder?.value
         }
         set {
-            containerHolder = newValue.map({ ContainerPropertyHolder(value: $0) })
+            containerHolder = newValue.map { ContainerPropertyHolder(value: $0) }
         }
     }
 
-    @objc private(set) internal var dipTag: String? {
+    @objc internal private(set) var dipTag: String? {
         get {
             return objc_getAssociatedObject(self, &AssociatedKeys.dipTag) as? String
         }

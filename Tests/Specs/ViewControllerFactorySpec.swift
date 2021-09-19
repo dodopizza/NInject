@@ -1,8 +1,8 @@
 import Foundation
-import UIKit
-import Quick
 import Nimble
 import NSpry
+import Quick
+import UIKit
 
 @testable import NInject
 @testable import NInjectTestHelpers
@@ -14,7 +14,7 @@ class NViewControllerFactorySpec: QuickSpec {
 
             beforeEach {
                 let container = Container()
-                container.registerStoryboardable(TestViewController.self, { _, _ in })
+                container.registerStoryboardable(TestViewController.self) { _, _ in }
                 subject = Impl.ViewControllerFactory(container: container)
             }
 

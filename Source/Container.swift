@@ -58,12 +58,12 @@ public final class Container {
 
     private func key<T>(_ type: T, name: String?) -> String {
         let key = String(reflecting: type).normalized
-        return name.map({ key + "_" + $0 }) ?? key
+        return name.map { key + "_" + $0 } ?? key
     }
 
     private func key(_ obj: Any, name: String?) -> String {
         let key = String(reflecting: type(of: obj)).normalized
-        return name.map({ key + "_" + $0 }) ?? key
+        return name.map { key + "_" + $0 } ?? key
     }
 }
 
@@ -74,7 +74,7 @@ extension Container: Registrator {
         guard let storage = storages[key] else {
             fatalError("can't resolve dependency of <\(type)>")
         }
-        
+
         return Forwarder(container: self, storage: storage)
     }
 
@@ -192,7 +192,7 @@ private extension String {
     }
 
     var normalized: String {
-        return components(separatedBy: ".").filter({ $0 != "Type" && $0 != "Protocol" }).joined(separator: ".").unwrapped
+        return components(separatedBy: ".").filter { $0 != "Type" && $0 != "Protocol" }.joined(separator: ".").unwrapped
     }
 }
 

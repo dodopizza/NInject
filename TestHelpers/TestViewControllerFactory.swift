@@ -1,10 +1,10 @@
 import Foundation
-import UIKit
 import NSpry
+import UIKit
 
 @testable import NInject
 
-public struct NTestViewControllerFactory {
+public enum NTestViewControllerFactory {
     public static func instantiate<T>(from nibName: String? = nil, bundle: Bundle, container: Container) -> T where T: UIViewController {
         return Impl.ViewControllerFactory(container: container).instantiate(from: nibName, bundle: bundle)
     }

@@ -14,7 +14,7 @@ extension Impl {
         }
 
         private func instantiateInitialViewController<T: UIViewController>(from storyboard: UIStoryboard) -> T {
-            if #available(iOS 13.0, *), let controller = storyboard.instantiateInitialViewController(creator: { T.init(coder: $0) }) {
+            if #available(iOS 13.0, *), let controller = storyboard.instantiateInitialViewController(creator: { T(coder: $0) }) {
                 return controller
             }
             return storyboard.instantiateInitialViewController() as! T
@@ -39,11 +39,11 @@ extension Impl.ViewControllerFactory: ViewControllerFactory {
 }
 
 public extension ViewControllerFactory {
-    func instantiate<T: UIViewController>(_ type: T.Type, from nibName: String?, bundle: Bundle) -> T {
+    func instantiate<T: UIViewController>(_: T.Type, from nibName: String?, bundle: Bundle) -> T {
         return instantiate(from: nibName, bundle: bundle)
     }
 
-    func instantiate<T: UIViewController>(_ type: T.Type, bundle: Bundle) -> T {
+    func instantiate<T: UIViewController>(_: T.Type, bundle: Bundle) -> T {
         return instantiate(from: nil, bundle: bundle)
     }
 

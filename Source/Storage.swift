@@ -30,7 +30,7 @@ final class ContainerStorage: Storage {
 
     init(accessLevel: Options.AccessLevel,
          generator: @escaping Generator,
-         entity: Entity? = nil) {
+         entity _: Entity? = nil) {
         self.accessLevel = accessLevel
         self.generator = generator
     }

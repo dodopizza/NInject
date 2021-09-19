@@ -6,6 +6,7 @@ public protocol Resolver {
 }
 
 // MARK: - strong ref type
+
 public extension Resolver {
     func optionalResolve<T>(_ type: T.Type, with arguments: [Any]) -> T? {
         optionalResolve(type, with: Arguments(arguments))
@@ -95,6 +96,7 @@ public extension Resolver {
 }
 
 // MARK: - optional
+
 public extension Resolver {
     func optionalResolve<T>(_ type: T.Type) -> T? {
         optionalResolve(type, with: [])
