@@ -7,7 +7,7 @@ import UIKit
 @testable import NInject
 @testable import NInjectTestHelpers
 
-class NViewControllerFactorySpec: QuickSpec {
+final class NViewControllerFactorySpec: QuickSpec {
     override func spec() {
         describe("NViewControllerFactory") {
             var subject: ViewControllerFactory!
