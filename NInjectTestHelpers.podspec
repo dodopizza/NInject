@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = "NInjectTestHelpers"
-  spec.version      = "1.0.0"
+  spec.version      = "1.7.0"
   spec.summary      = "DI extension"
 
   spec.source       = { :git => "git@github.com:NikSativa/NInject.git" }
@@ -28,8 +28,8 @@ Pod::Spec.new do |spec|
     tests.dependency 'Nimble'
     tests.dependency 'NSpry_Nimble'
 
-    tests.source_files = 'Tests/Specs/**/*.swift'
-    tests.resources = ['Tests/Specs/**/*.{storyboard,xib,xcassets,json,imageset,png,strings,stringsdict}']
+    tests.source_files = 'Tests/**/*.swift'
+    tests.resources = ['Tests/**/*.{storyboard,xib,xcassets,json,imageset,png,strings,stringsdict}']
     tests.exclude_files = '**/SPM/**/*.*'
   end
 end
