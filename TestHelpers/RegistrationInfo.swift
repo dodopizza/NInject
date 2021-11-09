@@ -25,10 +25,10 @@ enum RegistrationInfo: Equatable, SpryEquatable {
         case (.forwardingName(let ta, let nameA, let accessLevelA), .forwardingName(let tb, let nameB, let accessLevelB)):
             return ta == tb && nameA == nameB && accessLevelA == accessLevelB
         case (.forwarding, _),
-            (.forwardingName, _),
-            (.register, _),
-            (.registerStoryboardable, _),
-            (.registerViewController, _):
+             (.forwardingName, _),
+             (.register, _),
+             (.registerStoryboardable, _),
+             (.registerViewController, _):
             return false
         }
     }
