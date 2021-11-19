@@ -13,14 +13,14 @@ public protocol Registrator {
     func registration<T>(for type: T.Type,
                          name: String?) -> Forwarding
 
-#if os(iOS)
+    #if os(iOS)
     @discardableResult
     func registerViewController<T: UIViewController>(_ type: T.Type,
                                                      options: Options,
                                                      _ entity: @escaping (Resolver, ViewControllerFactory) -> T) -> Forwarding
     func registerViewController<T: UIViewController>(_ type: T.Type,
                                                      _ entity: @escaping (T, Resolver) -> Void)
-#endif
+    #endif
 
     func registerStoryboardable<T>(_ type: T.Type,
                                    _ entity: @escaping (T, Resolver) -> Void)
@@ -31,11 +31,11 @@ public extension Registrator {
         return registration(for: type, name: name)
     }
 
-#if os(iOS)
+    #if os(iOS)
     func registerViewController<T: UIViewController>(_ type: T.Type, _ entity: @escaping (T, Resolver) -> Void) {
         registerStoryboardable(type, entity)
     }
-#endif
+    #endif
 
     func registerViewController<T>(_ type: T.Type) {
         registerStoryboardable(type) { _, _ in }
@@ -47,7 +47,7 @@ public extension Registrator {
 }
 
 public extension Registrator {
-#if os(iOS)
+    #if os(iOS)
     @discardableResult
     func registerViewController<T: UIViewController>(_ type: T.Type,
                                                      options: Options = .transient,
@@ -58,7 +58,7 @@ public extension Registrator {
             return vc
         }
     }
-#endif
+    #endif
 
     // MARK: resolver & arguments
 

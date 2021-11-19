@@ -46,9 +46,9 @@ extension TestRegistrator: Registrator {
         registered.append(.registerStoryboardable(type))
     }
 
-#if os(iOS)
+    #if os(iOS)
     func registerViewController<T: UIViewController>(_ type: T.Type, _: @escaping (T, Resolver) -> Void) {
         registered.append(.registerViewController(type))
     }
-#endif
+    #endif
 }

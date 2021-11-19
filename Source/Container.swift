@@ -21,11 +21,11 @@ public final class Container {
             makeStoryboardable()
         }
 
-#if os(iOS)
+        #if os(iOS)
         register(ViewControllerFactory.self) { [unowned self] _, _ in
             Impl.ViewControllerFactory(container: self)
         }
-#endif
+        #endif
     }
 
     deinit {

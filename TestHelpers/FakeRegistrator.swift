@@ -18,9 +18,9 @@ final class FakeRegistrator: Registrator, Spryable {
         case registerWithOptions = "register(options:entity:)"
         case register = "register(entity:)"
         case registerStoryboardable = "registerStoryboardable(_:entity:)"
-#if os(iOS)
+        #if os(iOS)
         case registerViewController = "registerViewController(_:entity:)"
-#endif
+        #endif
     }
 
     init() {
@@ -50,9 +50,9 @@ final class FakeRegistrator: Registrator, Spryable {
         return spryify(arguments: type, entity)
     }
 
-#if os(iOS)
+    #if os(iOS)
     func registerViewController<T: UIViewController>(_ type: T.Type, _ entity: @escaping (T, Resolver) -> Void) {
         return spryify(arguments: type, entity)
     }
-#endif
+    #endif
 }
