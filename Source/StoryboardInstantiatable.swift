@@ -1,6 +1,5 @@
 import Foundation
 import ObjectiveC
-import UIKit
 
 public protocol StoryboardSelfInjectable {
     func didInstantiateFromStoryboard() -> Bool

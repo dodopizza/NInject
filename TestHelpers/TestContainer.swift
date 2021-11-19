@@ -1,7 +1,10 @@
 import Foundation
 import NInject
 import NSpry
+
+#if os(iOS)
 import UIKit
+#endif
 
 @testable import NInject
 
@@ -43,7 +46,9 @@ extension TestRegistrator: Registrator {
         registered.append(.registerStoryboardable(type))
     }
 
+#if os(iOS)
     func registerViewController<T: UIViewController>(_ type: T.Type, _: @escaping (T, Resolver) -> Void) {
         registered.append(.registerViewController(type))
     }
+#endif
 }

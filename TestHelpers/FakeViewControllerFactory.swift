@@ -1,3 +1,4 @@
+#if os(iOS)
 import Foundation
 import NSpry
 import UIKit
@@ -25,3 +26,4 @@ final class FakeViewControllerFactory: ViewControllerFactory, Spryable {
         return spryify(arguments: T.self, N.self, nibName, bundle)
     }
 }
+#endif

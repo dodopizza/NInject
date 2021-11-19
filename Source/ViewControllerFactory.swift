@@ -1,3 +1,6 @@
+
+#if os(iOS)
+import Foundation
 import UIKit
 
 public protocol ViewControllerFactory {
@@ -59,3 +62,4 @@ public extension ViewControllerFactory {
         return createNavigationController(from: nil, bundle: bundle)
     }
 }
+#endif

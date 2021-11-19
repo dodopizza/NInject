@@ -1,7 +1,6 @@
 import Foundation
 import NInject
 import NSpry
-import UIKit
 
 @testable import NInject
 

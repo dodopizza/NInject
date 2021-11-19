@@ -1,5 +1,8 @@
 import Foundation
+
+#if os(iOS)
 import UIKit
+#endif
 
 public protocol Registrator {
     @discardableResult
@@ -10,15 +13,17 @@ public protocol Registrator {
     func registration<T>(for type: T.Type,
                          name: String?) -> Forwarding
 
+#if os(iOS)
     @discardableResult
     func registerViewController<T: UIViewController>(_ type: T.Type,
                                                      options: Options,
                                                      _ entity: @escaping (Resolver, ViewControllerFactory) -> T) -> Forwarding
+    func registerViewController<T: UIViewController>(_ type: T.Type,
+                                                     _ entity: @escaping (T, Resolver) -> Void)
+#endif
 
     func registerStoryboardable<T>(_ type: T.Type,
                                    _ entity: @escaping (T, Resolver) -> Void)
-    func registerViewController<T: UIViewController>(_ type: T.Type,
-                                                     _ entity: @escaping (T, Resolver) -> Void)
 }
 
 public extension Registrator {
@@ -26,9 +31,11 @@ public extension Registrator {
         return registration(for: type, name: name)
     }
 
+#if os(iOS)
     func registerViewController<T: UIViewController>(_ type: T.Type, _ entity: @escaping (T, Resolver) -> Void) {
         registerStoryboardable(type, entity)
     }
+#endif
 
     func registerViewController<T>(_ type: T.Type) {
         registerStoryboardable(type) { _, _ in }
@@ -40,6 +47,7 @@ public extension Registrator {
 }
 
 public extension Registrator {
+#if os(iOS)
     @discardableResult
     func registerViewController<T: UIViewController>(_ type: T.Type,
                                                      options: Options = .transient,
@@ -50,6 +58,7 @@ public extension Registrator {
             return vc
         }
     }
+#endif
 
     // MARK: resolver & arguments
 

@@ -1,3 +1,4 @@
+#if os(iOS)
 import Foundation
 import Nimble
 import NSpry
@@ -46,3 +47,4 @@ final class NViewControllerFactorySpec: QuickSpec {
         }
     }
 }
+#endif

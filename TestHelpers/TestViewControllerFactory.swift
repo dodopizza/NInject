@@ -1,3 +1,4 @@
+#if os(iOS)
 import Foundation
 import NSpry
 import UIKit
@@ -13,3 +14,4 @@ public enum NTestViewControllerFactory {
         return Impl.ViewControllerFactory(container: container).createNavigationController(from: nibName, bundle: bundle)
     }
 }
+#endif
