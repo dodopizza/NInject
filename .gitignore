@@ -20,3 +20,6 @@ bin/
 Build/
 DerivedData/
 .build/
+
+Derived/
+NInject.xcodeproj
